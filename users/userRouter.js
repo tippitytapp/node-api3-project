@@ -45,20 +45,60 @@ router.get('/', (req, res) => {
   })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   // do your magic!
+  Users.getById(req.params.id)
+  .then(user=>{
+    res.status(200).json(user)
+  })
+  .catch(error => {
+    res.status(500).json({
+      errorMessage: "Error Loading Resource"
+    })
+  })
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
+  Users.getUserPosts(req.params.id)
+  .then(posts => {
+    res.status(200).json({
+      posts:posts
+    })
+  })
+  .catch(error=> {
+    res.status(500).json({
+      errorMessage: "Server Error",
+      error: error
+    })
+  })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
+  Users.remove(req.params.id)
+  .then(count => {
+    res.status(200).json({
+      count: count,
+      message: "Record successfully deleted"
+    })
+  })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res) => {
   // do your magic!
+  Users.update(req.params.id, req.body)
+  .then(count => {
+    if(count = 1){
+      res.status(200).json({
+        message: "user updated successfully"
+      })
+    }else{
+      res.status(500).json({
+        errorMessage: "Error updating user"
+      })
+    }
+  })
 });
 
 //custom middleware
