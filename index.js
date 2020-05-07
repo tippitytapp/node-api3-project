@@ -30,5 +30,5 @@ server.use('/api/users', UsersRouter)
 
 // server listen
 server.listen(PORT, ()=>{
-    console.log(`\nServer Listening on http://localhost:${PORT}\n`.bgCyan.black.bold)
+    console.log(`\nServer Listening on http://localhost:${PORT}\n`.rainbow.bold.underline)
 });
